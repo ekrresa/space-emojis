@@ -1,23 +1,57 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { useRouter } from 'next/router';
+import Fuse from 'fuse.js';
+
+import { Gallery } from '../components/Gallery';
 import { Emoji } from '../types';
 import Search from '../public/search.svg';
 import styles from '../styles/Home.module.css';
 
 export default function Home() {
+  const router = useRouter();
   const [data, setData] = useState<Emoji[] | null>(null);
+  const [searchResults, setSearchResults] = useState<
+    Fuse.FuseResult<Emoji>[] | undefined
+  >([]);
+  const fuseInstance = useRef<Fuse<Emoji> | null>(null);
 
   useEffect(() => {
     (async function loadData() {
       const emojis = await import('../lib/data').then(data => data.default);
-      setData(emojis.slice(0, 10));
+      setData(emojis);
     })();
   }, []);
 
-  const copyEmoji = (emoji: string) => {
-    navigator.clipboard.writeText(emoji).then(() => {
-      console.log('copied');
-    });
+  useEffect(() => {
+    if (data) {
+      const searchIndex = Fuse.createIndex(['title', 'keywords'], data);
+      const fuse = new Fuse(
+        data,
+        { isCaseSensitive: false, minMatchCharLength: 2 },
+        searchIndex
+      );
+      fuseInstance.current = fuse;
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (router.query.q) {
+      const searchTerm = router.query.q as string;
+      const results = fuseInstance.current?.search(searchTerm);
+      setSearchResults(results);
+    }
+  }, [router.query.q]);
+
+  const refineSearchResults = (data: Fuse.FuseResult<Emoji>[]) => {
+    return data.map(results => results.item);
   };
+
+  const emojis =
+    searchResults && searchResults.length > 0
+      ? refineSearchResults(searchResults)
+      : data && data.length > 0
+      ? data
+      : [];
 
   return (
     <div className={styles.container}>
@@ -28,24 +62,27 @@ export default function Home() {
       <main>
         <form className={styles.emojiForm}>
           <Search className={styles.searchIcon} />
-          <input className={styles.emojiInput} />
+          <input
+            className={styles.emojiInput}
+            onChange={e => {
+              if (e.currentTarget.value) {
+                router.push(`${router.pathname}?q=${e.currentTarget.value}`, undefined, {
+                  shallow: true,
+                });
+              } else {
+                setSearchResults([]);
+              }
+            }}
+          />
         </form>
 
-        <section className={styles.emojiGrid}>
-          {data &&
-            data.map(emoji => (
-              <div
-                className={styles.emojiDisplay}
-                key={emoji.symbol}
-                onClick={() => {
-                  copyEmoji(emoji.symbol);
-                }}
-              >
-                <div className={styles.emoji}>{emoji.symbol}</div>
-                <div className="">{emoji.title}</div>
-              </div>
-            ))}
-        </section>
+        {data ? (
+          <section className={styles.emojiGrid}>
+            <Gallery cards={emojis} />
+          </section>
+        ) : (
+          <div className={styles.loading}>Loading results...</div>
+        )}
       </main>
     </div>
   );

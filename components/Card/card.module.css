@@ -1,0 +1,19 @@
+.card {
+  background: #fff;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.5rem 0.5rem 1rem;
+  color: #2f363d;
+  height: 100%;
+  width: 100%;
+}
+.emoji {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  font-size: 2.5rem;
+}
