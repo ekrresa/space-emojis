@@ -13,6 +13,12 @@ export default function Home() {
     })();
   }, []);
 
+  const copyEmoji = (emoji: string) => {
+    navigator.clipboard.writeText(emoji).then(() => {
+      console.log('copied');
+    });
+  };
+
   return (
     <div className={styles.container}>
       <header>
@@ -28,7 +34,13 @@ export default function Home() {
         <section className={styles.emojiGrid}>
           {data &&
             data.map(emoji => (
-              <div className={styles.emojiDisplay} key={emoji.symbol}>
+              <div
+                className={styles.emojiDisplay}
+                key={emoji.symbol}
+                onClick={() => {
+                  copyEmoji(emoji.symbol);
+                }}
+              >
                 <div className={styles.emoji}>{emoji.symbol}</div>
                 <div className="">{emoji.title}</div>
               </div>
