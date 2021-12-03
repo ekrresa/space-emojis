@@ -9,11 +9,12 @@ import styles from '../styles/Home.module.css';
 
 export default function Home() {
   const router = useRouter();
+  const fuseInstance = useRef<Fuse<Emoji> | null>(null);
+
   const [data, setData] = useState<Emoji[] | null>(null);
   const [searchResults, setSearchResults] = useState<
     Fuse.FuseResult<Emoji>[] | undefined
   >([]);
-  const fuseInstance = useRef<Fuse<Emoji> | null>(null);
 
   useEffect(() => {
     (async function loadData() {
@@ -35,11 +36,9 @@ export default function Home() {
   }, [data]);
 
   useEffect(() => {
-    if (router.query.q) {
-      const searchTerm = router.query.q as string;
-      const results = fuseInstance.current?.search(searchTerm);
-      setSearchResults(results);
-    }
+    const searchTerm = router.query.q as string;
+    const results = fuseInstance.current?.search(searchTerm);
+    setSearchResults(results);
   }, [router.query.q]);
 
   const refineSearchResults = (data: Fuse.FuseResult<Emoji>[]) => {
@@ -65,20 +64,17 @@ export default function Home() {
           <input
             className={styles.emojiInput}
             onChange={e => {
-              if (e.currentTarget.value) {
-                router.push(`${router.pathname}?q=${e.currentTarget.value}`, undefined, {
-                  shallow: true,
-                });
-              } else {
-                setSearchResults([]);
-              }
+              router.push(`${router.pathname}?q=${e.currentTarget.value}`, undefined, {
+                shallow: true,
+              });
             }}
           />
         </form>
 
+        {/* Move this block to the Gallery component */}
         {data ? (
           <section className={styles.emojiGrid}>
-            <Gallery cards={emojis} />
+            <Gallery emojisList={emojis} />
           </section>
         ) : (
           <div className={styles.loading}>Loading results...</div>

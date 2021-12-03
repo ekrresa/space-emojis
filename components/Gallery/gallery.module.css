@@ -1,4 +1,17 @@
-.grid > div {
-  position: relative;
+.gridContainer {
+  max-width: 75rem;
   margin: auto;
+  height: 70vh;
+  margin-top: 3rem;
+}
+
+.listContainer {
+  display: grid;
+  grid-gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(10rem, 100%), 1fr));
+}
+
+.itemContainer {
+  display: flex;
+  height: 10rem;
 }
