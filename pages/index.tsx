@@ -1,24 +1,24 @@
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { ChangeEvent, useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
 import Fuse from 'fuse.js';
+import debounce from 'lodash.debounce';
 
 import { Gallery } from '../components/Gallery';
 import { Emoji } from '../types';
 import Search from '../public/search.svg';
 import styles from '../styles/Home.module.css';
 
-const refineSearchResults = (data: Fuse.FuseResult<Emoji>[]) => {
-  return data.map(results => results.item);
+const refineSearchResults = (data: Fuse.FuseResult<Emoji>[] | undefined) => {
+  return data ? data.map(results => results.item) : [];
 };
 
 export default function Home() {
   const router = useRouter();
-  const fuseInstance = useRef<Fuse<Emoji> | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  const [data, setData] = useState<Emoji[] | null>(null);
-  const [searchResults, setSearchResults] = useState<
-    Fuse.FuseResult<Emoji>[] | undefined
-  >([]);
+  const [data, setData] = useState<Emoji[]>([]);
+  const [searchResults, setSearchResults] = useState<Emoji[]>([]);
+  const [fuseInstance, setFuseInstance] = useState<Fuse<Emoji> | null>(null);
 
   useEffect(() => {
     (async function loadData() {
@@ -32,26 +32,34 @@ export default function Home() {
       const searchIndex = Fuse.createIndex(['title', 'keywords'], data);
       const fuse = new Fuse(
         data,
-        { isCaseSensitive: false, minMatchCharLength: 2 },
+        { isCaseSensitive: false, ignoreLocation: true, minMatchCharLength: 2 },
         searchIndex
       );
-      fuseInstance.current = fuse;
+      setFuseInstance(fuse);
     }
   }, [data]);
 
   useEffect(() => {
-    const searchTerm = router.query.q as string;
-    const results = fuseInstance.current?.search(searchTerm);
-    setSearchResults(results);
-  }, [router.query.q]);
+    if (fuseInstance && router.query.q) {
+      const searchTerm = router.query.q as string;
 
-  const emojis = useMemo(() => {
-    return searchResults && searchResults.length > 0
-      ? refineSearchResults(searchResults)
-      : data && data.length > 0
-      ? data
-      : [];
-  }, [data, searchResults]);
+      // Update search input value
+      if (inputRef.current) {
+        inputRef.current.value = searchTerm;
+      }
+
+      const results = fuseInstance.search(searchTerm);
+      setSearchResults(refineSearchResults(results));
+    } else {
+      setSearchResults([]);
+    }
+  }, [fuseInstance, router.query.q]);
+
+  const handleSearchInput = debounce((evt: ChangeEvent<HTMLInputElement>) => {
+    router.push(`${router.pathname}?q=${evt.target.value}`, undefined, {
+      shallow: true,
+    });
+  }, 500);
 
   return (
     <div className={styles.container}>
@@ -64,18 +72,14 @@ export default function Home() {
           <Search className={styles.searchIcon} />
           <input
             className={styles.emojiInput}
-            onChange={e => {
-              router.push(`${router.pathname}?q=${e.currentTarget.value}`, undefined, {
-                shallow: true,
-              });
-            }}
-            value={router.query.q ?? ''}
+            onChange={handleSearchInput}
+            ref={inputRef}
             type="search"
           />
         </form>
         {/* <div className={styles.recentSearch}>Recent searches:</div> */}
 
-        <Gallery emojisList={emojis} />
+        <Gallery emojisList={searchResults.length > 0 ? searchResults : data} />
       </main>
     </div>
   );
