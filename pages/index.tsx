@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { useRouter } from 'next/router';
 import Fuse from 'fuse.js';
 
@@ -6,6 +6,10 @@ import { Gallery } from '../components/Gallery';
 import { Emoji } from '../types';
 import Search from '../public/search.svg';
 import styles from '../styles/Home.module.css';
+
+const refineSearchResults = (data: Fuse.FuseResult<Emoji>[]) => {
+  return data.map(results => results.item);
+};
 
 export default function Home() {
   const router = useRouter();
@@ -41,16 +45,13 @@ export default function Home() {
     setSearchResults(results);
   }, [router.query.q]);
 
-  const refineSearchResults = (data: Fuse.FuseResult<Emoji>[]) => {
-    return data.map(results => results.item);
-  };
-
-  const emojis =
-    searchResults && searchResults.length > 0
+  const emojis = useMemo(() => {
+    return searchResults && searchResults.length > 0
       ? refineSearchResults(searchResults)
       : data && data.length > 0
       ? data
       : [];
+  }, [data, searchResults]);
 
   return (
     <div className={styles.container}>
@@ -68,17 +69,13 @@ export default function Home() {
                 shallow: true,
               });
             }}
+            value={router.query.q ?? ''}
+            type="search"
           />
         </form>
+        {/* <div className={styles.recentSearch}>Recent searches:</div> */}
 
-        {/* Move this block to the Gallery component */}
-        {data ? (
-          <section className={styles.emojiGrid}>
-            <Gallery emojisList={emojis} />
-          </section>
-        ) : (
-          <div className={styles.loading}>Loading results...</div>
-        )}
+        <Gallery emojisList={emojis} />
       </main>
     </div>
   );

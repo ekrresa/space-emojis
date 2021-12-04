@@ -15,3 +15,7 @@
   display: flex;
   height: 10rem;
 }
+.loading {
+  margin-top: 3rem;
+  text-align: center;
+}

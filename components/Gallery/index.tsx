@@ -11,13 +11,19 @@ interface GalleryProps {
 
 export function Gallery({ emojisList }: GalleryProps) {
   return (
-    <div className={styles.gridContainer}>
-      <VirtuosoGrid
-        totalCount={emojisList.length}
-        itemClassName={styles.itemContainer}
-        listClassName={styles.listContainer}
-        itemContent={index => <Card data={emojisList[index]} />}
-      />
-    </div>
+    <>
+      {emojisList ? (
+        <section className={styles.gridContainer}>
+          <VirtuosoGrid
+            totalCount={emojisList.length}
+            itemClassName={styles.itemContainer}
+            listClassName={styles.listContainer}
+            itemContent={index => <Card data={emojisList[index]} />}
+          />
+        </section>
+      ) : (
+        <div className={styles.loading}>Loading results...</div>
+      )}
+    </>
   );
 }
