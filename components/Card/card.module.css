@@ -9,6 +9,10 @@
   padding: 0.5rem 0.5rem 1rem;
   color: #2f363d;
   flex: 1;
+  transition: background ease 0.3s;
+}
+.card:hover {
+  background: #f4f4f4;
 }
 .emoji {
   flex: 1 1 auto;

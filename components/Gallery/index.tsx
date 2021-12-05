@@ -15,10 +15,13 @@ export function Gallery({ emojisList }: GalleryProps) {
       {emojisList ? (
         <section className={styles.gridContainer}>
           <VirtuosoGrid
+            overscan={150}
             totalCount={emojisList.length}
             itemClassName={styles.itemContainer}
             listClassName={styles.listContainer}
-            itemContent={index => <Card data={emojisList[index]} />}
+            itemContent={index => (
+              <Card key={emojisList[index].symbol + index} data={emojisList[index]} />
+            )}
           />
         </section>
       ) : (
