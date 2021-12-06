@@ -24,7 +24,7 @@ export default function Home() {
 
   useEffect(() => {
     (async function loadData() {
-      const emojis = await import('../lib/data').then(data => data.default);
+      const emojis = await import('../public/emoji-list.json').then(data => data.default);
       setData(emojis);
     })();
   }, []);
@@ -43,6 +43,7 @@ export default function Home() {
         searchIndex
       );
       setFuseInstance(fuse);
+      inputRef.current?.focus();
     }
   }, [data]);
 
