@@ -1,3 +1,4 @@
+import { useToastContext } from '../../context/toasts';
 import { Emoji } from '../../types';
 import styles from './card.module.css';
 
@@ -6,9 +7,11 @@ interface CardProps {
 }
 
 export function Card({ data }: CardProps) {
+  const { toggleToast } = useToastContext();
+
   const copyEmoji = (emoji: string) => {
     navigator.clipboard.writeText(emoji).then(() => {
-      console.log('copied');
+      toggleToast();
     });
   };
 

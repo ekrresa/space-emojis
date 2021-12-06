@@ -4,6 +4,7 @@ import Fuse from 'fuse.js';
 import debounce from 'lodash.debounce';
 
 import { Gallery } from '../components/Gallery';
+import { useToastContext } from '../context/toasts';
 import { Emoji } from '../types';
 import Search from '../public/search.svg';
 import styles from '../styles/Home.module.css';
@@ -15,6 +16,7 @@ const refineSearchResults = (data: Fuse.FuseResult<Emoji>[] | undefined) => {
 export default function Home() {
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
+  const { showToast } = useToastContext();
 
   const [data, setData] = useState<Emoji[]>([]);
   const [searchResults, setSearchResults] = useState<Emoji[]>([]);
@@ -63,6 +65,9 @@ export default function Home() {
 
   return (
     <div className={styles.container}>
+      <div className={`${styles.clipboard} ${showToast ? styles['clipboard-show'] : ''}`}>
+        Copied to Clipboard!
+      </div>
       <header>
         <h1 className={styles.title}>Emoji Search</h1>
       </header>
