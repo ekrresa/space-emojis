@@ -30,7 +30,7 @@ export function Gallery({ emojisList }: GalleryProps) {
             dataLength={loadedEmojis.length}
             next={() => setCurrentPage(page => page + 1)}
             hasMore={hasMore}
-            loader={<h4>Loading...</h4>}
+            loader={<div style={{ textAlign: 'center' }}>Loading...</div>}
             scrollableTarget="scrollableDiv"
             endMessage={
               loadedEmojis.length > 0 ? <p className={styles.listEnd}>The End</p> : ''
