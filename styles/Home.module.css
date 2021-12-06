@@ -37,6 +37,23 @@
   fill: #2f363d;
 }
 
+.clipboard {
+  position: fixed;
+  width: 100%;
+  padding: 0.5rem 0.5rem;
+  text-align: center;
+  top: 0;
+  left: 0;
+  background: #abd1c6;
+  color: #001e1d;
+  font-size: 0.8rem;
+  transform: translateY(-100%);
+  transition: all 0.5s ease;
+}
+.clipboard-show {
+  transform: translateY(0);
+}
+
 /* .recentSearch {
   margin: auto;
   max-width: 30rem;

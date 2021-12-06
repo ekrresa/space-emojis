@@ -34,7 +34,12 @@ export default function Home() {
       const searchIndex = Fuse.createIndex(['title', 'keywords'], data);
       const fuse = new Fuse(
         data,
-        { isCaseSensitive: false, ignoreLocation: true, minMatchCharLength: 2 },
+        {
+          isCaseSensitive: false,
+          ignoreLocation: true,
+          minMatchCharLength: 2,
+          threshold: 0.3,
+        },
         searchIndex
       );
       setFuseInstance(fuse);
@@ -84,7 +89,7 @@ export default function Home() {
         </form>
         {/* <div className={styles.recentSearch}>Recent searches:</div> */}
 
-        <Gallery emojisList={searchResults.length > 0 ? searchResults : data} />
+        <Gallery emojisList={data} />
       </main>
     </div>
   );
