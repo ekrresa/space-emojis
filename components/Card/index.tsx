@@ -17,8 +17,10 @@ export function Card({ data }: CardProps) {
 
   return (
     <div className={styles.card} onClick={() => copyEmoji(data.symbol)}>
-      <div className={styles.emoji}>{data.symbol}</div>
-      <div className={styles.emojiTitle}>{data.title}</div>
+      <div className={styles.emoji} data-testid="emoji-symbol">
+        {data.symbol}
+      </div>
+      <h4 className={styles.emojiTitle}>{data.title}</h4>
     </div>
   );
 }
