@@ -89,7 +89,11 @@ export default function Home() {
         </form>
         {/* <div className={styles.recentSearch}>Recent searches:</div> */}
 
-        <Gallery emojisList={data} />
+        {Boolean(router.query.q) ? (
+          <Gallery key={router.query.q as string} emojisList={searchResults} />
+        ) : (
+          <Gallery emojisList={data} />
+        )}
       </main>
     </div>
   );

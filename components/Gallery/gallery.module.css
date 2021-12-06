@@ -10,7 +10,12 @@
   display: grid;
   grid-gap: 1rem;
   grid-template-columns: repeat(auto-fit, minmax(min(10rem, 100%), 1fr));
-  padding-right: 1rem;
+}
+
+@media (min-width: 768px) {
+  .listContainer {
+    padding-right: 1rem;
+  }
 }
 
 .itemContainer {

@@ -22,26 +22,28 @@ export function Gallery({ emojisList }: GalleryProps) {
     setHasMore(Boolean(nextPage));
   }, [currentPage, emojisList]);
 
-  const fetchMoreEmojis = () => {
-    setCurrentPage(page => page + 1);
-  };
-
   return (
     <>
       {emojisList ? (
         <section className={styles.gridContainer} id="scrollableDiv">
           <InfiniteScroll
             dataLength={loadedEmojis.length}
-            next={fetchMoreEmojis}
+            next={() => setCurrentPage(page => page + 1)}
             hasMore={hasMore}
             loader={<h4>Loading...</h4>}
             scrollableTarget="scrollableDiv"
-            endMessage={<p className={styles.listEnd}>The End</p>}
+            endMessage={
+              loadedEmojis.length > 0 ? <p className={styles.listEnd}>The End</p> : ''
+            }
           >
             <div className={styles.listContainer}>
-              {loadedEmojis.map((emoji, index) => (
-                <Card key={emoji.title + '-' + index} data={emoji} />
-              ))}
+              {loadedEmojis.length > 0 ? (
+                loadedEmojis.map((emoji, index) => (
+                  <Card key={emoji.title + '-' + index} data={emoji} />
+                ))
+              ) : (
+                <div className={styles.loading}>No results found</div>
+              )}
             </div>
           </InfiniteScroll>
         </section>
