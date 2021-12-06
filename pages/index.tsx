@@ -4,6 +4,7 @@ import Fuse from 'fuse.js';
 import debounce from 'lodash.debounce';
 
 import { Gallery } from '../components/Gallery';
+import { useToastContext } from '../context/toasts';
 import { Emoji } from '../types';
 import Search from '../public/search.svg';
 import styles from '../styles/Home.module.css';
@@ -15,6 +16,7 @@ const refineSearchResults = (data: Fuse.FuseResult<Emoji>[] | undefined) => {
 export default function Home() {
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
+  const { showToast } = useToastContext();
 
   const [data, setData] = useState<Emoji[]>([]);
   const [searchResults, setSearchResults] = useState<Emoji[]>([]);
@@ -32,7 +34,12 @@ export default function Home() {
       const searchIndex = Fuse.createIndex(['title', 'keywords'], data);
       const fuse = new Fuse(
         data,
-        { isCaseSensitive: false, ignoreLocation: true, minMatchCharLength: 2 },
+        {
+          isCaseSensitive: false,
+          ignoreLocation: true,
+          minMatchCharLength: 2,
+          threshold: 0.3,
+        },
         searchIndex
       );
       setFuseInstance(fuse);
@@ -63,6 +70,9 @@ export default function Home() {
 
   return (
     <div className={styles.container}>
+      <div className={`${styles.clipboard} ${showToast ? styles['clipboard-show'] : ''}`}>
+        Copied to Clipboard!
+      </div>
       <header>
         <h1 className={styles.title}>Emoji Search</h1>
       </header>
@@ -79,7 +89,11 @@ export default function Home() {
         </form>
         {/* <div className={styles.recentSearch}>Recent searches:</div> */}
 
-        <Gallery emojisList={searchResults.length > 0 ? searchResults : data} />
+        {Boolean(router.query.q) ? (
+          <Gallery key={router.query.q as string} emojisList={searchResults} />
+        ) : (
+          <Gallery emojisList={data} />
+        )}
       </main>
     </div>
   );
