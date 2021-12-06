@@ -1,4 +1,4 @@
-import { cleanup, customRender, getData, screen } from '../../test-utils';
+import { cleanup, customRender, getData, screen } from '../../../test-utils';
 import { Card } from '.';
 import { Emoji } from '../../types';
 

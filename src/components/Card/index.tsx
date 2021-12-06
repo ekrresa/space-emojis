@@ -1,3 +1,4 @@
+import clipboard from 'clipboardy';
 import { useToastContext } from '../../context/toasts';
 import { Emoji } from '../../types';
 import styles from './card.module.css';
@@ -10,7 +11,7 @@ export function Card({ data }: CardProps) {
   const { toggleToast } = useToastContext();
 
   const copyEmoji = (emoji: string) => {
-    navigator.clipboard.writeText(emoji).then(() => {
+    clipboard.write(emoji).then(() => {
       toggleToast();
     });
   };
