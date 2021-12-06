@@ -1,6 +1,6 @@
 import React, { FC, ReactElement } from 'react';
 import { render, RenderOptions } from '@testing-library/react';
-import { ToastProvider } from './context/toasts';
+import { ToastProvider } from './src/context/toasts';
 
 const AllTheProviders: FC = ({ children }) => {
   return <ToastProvider>{children}</ToastProvider>;
