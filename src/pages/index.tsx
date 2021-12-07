@@ -34,7 +34,7 @@ export default function Home() {
     })();
   }, []);
 
-  // sets up a fuse instance and loads recent search terms
+  // sets up a fuse instance, focuses the search input, and loads recent search terms
   useEffect(() => {
     if (data) {
       const searchIndex = Fuse.createIndex(['title', 'keywords'], data);
@@ -58,7 +58,7 @@ export default function Home() {
     }
   }, [data]);
 
-  // Updates search results
+  // Updates search results after user types a search term
   useEffect(() => {
     if (fuseInstance && router.query.q) {
       const searchTerm = router.query.q as string;
@@ -75,7 +75,7 @@ export default function Home() {
     }
   }, [fuseInstance, router.query.q]);
 
-  // Saves search term
+  // Saves search term in localStorage and updates recent searches
   useEffect(() => {
     if (showToast && router.query.q) {
       Storage.saveItem(router.query.q as string);

@@ -5,6 +5,7 @@ import styles from './gallery.module.css';
 import { Card } from '../Card';
 import { paginator } from '../../lib/paginate';
 import { Emoji } from '../../types';
+import { ErrorCatch } from '../ErrorBoundary';
 
 interface GalleryProps {
   emojisList: Emoji[];
@@ -27,22 +28,30 @@ export function Gallery({ emojisList }: GalleryProps) {
       {emojisList ? (
         <section className={styles.gridContainer} id="scrollableDiv">
           {loadedEmojis.length > 0 ? (
-            <InfiniteScroll
-              dataLength={loadedEmojis.length}
-              next={() => setCurrentPage(page => page + 1)}
-              hasMore={hasMore}
-              loader={<div style={{ textAlign: 'center' }}>Loading...</div>}
-              scrollableTarget="scrollableDiv"
-              endMessage={
-                loadedEmojis.length > 0 ? <p className={styles.listEnd}>The End</p> : ''
-              }
+            <ErrorCatch
+              onReset={() => {
+                setCurrentPage(1);
+                setLoadedEmojis([]);
+                setHasMore(true);
+              }}
             >
-              <div className={styles.listContainer}>
-                {loadedEmojis.map((emoji, index) => (
-                  <Card key={emoji.title + '-' + index} data={emoji} />
-                ))}
-              </div>
-            </InfiniteScroll>
+              <InfiniteScroll
+                dataLength={loadedEmojis.length}
+                next={() => setCurrentPage(page => page + 1)}
+                hasMore={hasMore}
+                loader={<div style={{ textAlign: 'center' }}>Loading...</div>}
+                scrollableTarget="scrollableDiv"
+                endMessage={
+                  loadedEmojis.length > 0 ? <p className={styles.listEnd}>The End</p> : ''
+                }
+              >
+                <div className={styles.listContainer}>
+                  {loadedEmojis.map((emoji, index) => (
+                    <Card key={emoji.title + '-' + index} data={emoji} />
+                  ))}
+                </div>
+              </InfiniteScroll>
+            </ErrorCatch>
           ) : (
             <div className={styles.loading}>No results found</div>
           )}
