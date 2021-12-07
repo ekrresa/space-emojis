@@ -104,3 +104,12 @@
 .search:hover {
   background: #eae8e8;
 }
+
+.searchResults {
+  font-size: 0.8rem;
+  opacity: 0.7;
+  max-width: 75rem;
+  margin-inline: auto;
+  margin-block-start: 3rem;
+  margin-block-end: 1rem;
+}

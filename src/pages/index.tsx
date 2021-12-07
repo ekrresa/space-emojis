@@ -139,6 +139,10 @@ export default function Home() {
             ))}
         </div>
 
+        <div className={styles.searchResults}>
+          {searchResults.length > 0 ? `${searchResults.length} results found` : ''}
+        </div>
+
         {Boolean(router.query.q) ? (
           <Gallery
             key={(router.query.q as string) + searchResults.length}
