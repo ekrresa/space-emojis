@@ -6,7 +6,7 @@ import debounce from 'lodash.debounce';
 import { Gallery } from '../components/Gallery';
 import { useToastContext } from '../context/toasts';
 import { Emoji } from '../types';
-import Search from '../public/search.svg';
+import Search from '../../public/search.svg';
 import styles from '../styles/Home.module.css';
 
 const refineSearchResults = (data: Fuse.FuseResult<Emoji>[] | undefined) => {
@@ -24,7 +24,9 @@ export default function Home() {
 
   useEffect(() => {
     (async function loadData() {
-      const emojis = await import('../lib/data').then(data => data.default);
+      const emojis = await import('../../public/emoji-list.json').then(
+        data => data.default
+      );
       setData(emojis);
     })();
   }, []);
@@ -43,6 +45,7 @@ export default function Home() {
         searchIndex
       );
       setFuseInstance(fuse);
+      inputRef.current?.focus();
     }
   }, [data]);
 
@@ -70,7 +73,10 @@ export default function Home() {
 
   return (
     <div className={styles.container}>
-      <div className={`${styles.clipboard} ${showToast ? styles['clipboard-show'] : ''}`}>
+      <div
+        className={`${styles.clipboard} ${showToast ? styles['clipboard-show'] : ''}`}
+        data-testid="toast"
+      >
         Copied to Clipboard!
       </div>
       <header>
