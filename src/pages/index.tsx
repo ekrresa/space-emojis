@@ -19,7 +19,7 @@ export default function Home() {
   const inputRef = useRef<HTMLInputElement>(null);
   const { selectedEmoji, showToast } = useToastContext();
 
-  const [data, setData] = useState<Emoji[]>([]);
+  const [data, setData] = useState<Emoji[] | null>(null);
   const [searchResults, setSearchResults] = useState<Emoji[]>([]);
   const [fuseInstance, setFuseInstance] = useState<Fuse<Emoji> | null>(null);
   const [recentSearch, setRecentSearch] = useState<string[]>([]);
@@ -146,10 +146,10 @@ export default function Home() {
         {Boolean(router.query.q) ? (
           <Gallery
             key={(router.query.q as string) + searchResults.length}
-            emojisList={searchResults}
+            list={searchResults}
           />
         ) : (
-          <Gallery emojisList={data} />
+          <Gallery list={data} />
         )}
       </main>
     </div>
