@@ -26,26 +26,26 @@ export function Gallery({ emojisList }: GalleryProps) {
     <>
       {emojisList ? (
         <section className={styles.gridContainer} id="scrollableDiv">
-          <InfiniteScroll
-            dataLength={loadedEmojis.length}
-            next={() => setCurrentPage(page => page + 1)}
-            hasMore={hasMore}
-            loader={<div style={{ textAlign: 'center' }}>Loading...</div>}
-            scrollableTarget="scrollableDiv"
-            endMessage={
-              loadedEmojis.length > 0 ? <p className={styles.listEnd}>The End</p> : ''
-            }
-          >
-            <div className={styles.listContainer}>
-              {loadedEmojis.length > 0 ? (
-                loadedEmojis.map((emoji, index) => (
+          {loadedEmojis.length > 0 ? (
+            <InfiniteScroll
+              dataLength={loadedEmojis.length}
+              next={() => setCurrentPage(page => page + 1)}
+              hasMore={hasMore}
+              loader={<div style={{ textAlign: 'center' }}>Loading...</div>}
+              scrollableTarget="scrollableDiv"
+              endMessage={
+                loadedEmojis.length > 0 ? <p className={styles.listEnd}>The End</p> : ''
+              }
+            >
+              <div className={styles.listContainer}>
+                {loadedEmojis.map((emoji, index) => (
                   <Card key={emoji.title + '-' + index} data={emoji} />
-                ))
-              ) : (
-                <div className={styles.loading}>No results found</div>
-              )}
-            </div>
-          </InfiniteScroll>
+                ))}
+              </div>
+            </InfiniteScroll>
+          ) : (
+            <div className={styles.loading}>No results found</div>
+          )}
         </section>
       ) : (
         <div className={styles.loading}>Loading results...</div>

@@ -2,11 +2,13 @@ import * as React from 'react';
 
 interface IToastContext {
   showToast: boolean;
-  toggleToast: () => void;
+  selectedEmoji: string;
+  toggleToast: (emoji: string) => void;
 }
 
 const defaultState = {
   showToast: false,
+  selectedEmoji: '',
   toggleToast: () => {},
 };
 
@@ -14,9 +16,11 @@ const ToastContext = React.createContext<IToastContext>(defaultState);
 
 function ToastProvider({ children }: { children: React.ReactNode }) {
   const [toast, setToast] = React.useState(false);
+  const [emoji, setEmoji] = React.useState('');
 
-  const toggleToast = () => {
+  const toggleToast = (emoji: string) => {
     setToast(true);
+    setEmoji(emoji);
 
     setTimeout(() => {
       setToast(false);
@@ -24,7 +28,9 @@ function ToastProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <ToastContext.Provider value={{ showToast: toast, toggleToast }}>
+    <ToastContext.Provider
+      value={{ selectedEmoji: emoji, showToast: toast, toggleToast }}
+    >
       {children}
     </ToastContext.Provider>
   );

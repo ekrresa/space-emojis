@@ -5,8 +5,20 @@
 .title {
   text-align: center;
   color: #094067;
-  padding-block-start: 2rem;
   font-size: 2.5rem;
+  margin-block-start: 0;
+  margin-block-end: 0;
+  padding-block-start: 3rem;
+  background: linear-gradient(#decbb7 20%, #094067);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+  text-align: center;
+  margin-block-start: 0.5rem;
+  margin-block-end: 3rem;
 }
 
 @media (min-width: 768px) {
@@ -20,11 +32,18 @@
   align-items: center;
   margin: auto;
   max-width: 30rem;
-  border: 1px solid #b0b0b0;
+  border: none;
+  outline: 1px solid #b0b0b0;
   border-radius: 40px;
   overflow: hidden;
   padding: 0.5rem 0.9rem;
   background: #fff;
+  transition: outline 0.1s ease;
+  transform: translateZ(0);
+}
+.emojiForm:focus-within {
+  outline: 2px solid #0e9fa6;
+  outline-offset: 1px;
 }
 
 .emojiInput {
@@ -47,11 +66,13 @@
   position: fixed;
   width: 100%;
   padding: 0.5rem 0.5rem;
-  text-align: center;
   top: 0;
   left: 0;
   background: #abd1c6;
-  color: #001e1d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #2f363d;
   font-size: 0.8rem;
   transform: translateY(-100%);
   transition: all 0.5s ease;
@@ -60,9 +81,35 @@
   transform: translateY(0);
 }
 
-/* .recentSearch {
+.recentSearch {
   margin: auto;
   max-width: 30rem;
   margin-top: 1rem;
   font-size: 0.9rem;
-} */
+  display: flex;
+  align-items: center;
+}
+
+.search {
+  background: none;
+  color: #094067;
+  font-size: 0.9rem;
+  border-radius: 24px;
+  margin-right: 0.2rem;
+  cursor: pointer;
+  border: none;
+  padding: 0.15rem 0.5rem;
+  transition: background 0.3s ease;
+}
+.search:hover {
+  background: #eae8e8;
+}
+
+.searchResults {
+  font-size: 0.8rem;
+  opacity: 0.7;
+  max-width: 75rem;
+  margin-inline: auto;
+  margin-block-start: 3rem;
+  margin-block-end: 1rem;
+}
