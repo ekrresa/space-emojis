@@ -128,7 +128,7 @@ export default function Home() {
               <button
                 key={item}
                 className={styles.search}
-                onClick={() => handleRecentSearchClick('smile')}
+                onClick={() => handleRecentSearchClick(item)}
               >
                 {item}
               </button>

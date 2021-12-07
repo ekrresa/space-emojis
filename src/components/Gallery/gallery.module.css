@@ -1,8 +1,8 @@
 .gridContainer {
   max-width: 75rem;
   margin: auto;
-  height: calc(100vh - 16.3rem);
-  margin-top: 2rem;
+  height: calc(100vh - 19.3rem);
+  margin-top: 3rem;
   overflow: auto;
 }
 
