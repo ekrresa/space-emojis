@@ -69,7 +69,10 @@
   top: 0;
   left: 0;
   background: #abd1c6;
-  color: #001e1d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #2f363d;
   font-size: 0.8rem;
   transform: translateY(-100%);
   transition: all 0.5s ease;

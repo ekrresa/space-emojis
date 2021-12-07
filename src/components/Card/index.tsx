@@ -12,7 +12,7 @@ export function Card({ data }: CardProps) {
 
   const copyEmoji = (emoji: string) => {
     clipboard.write(emoji).then(() => {
-      toggleToast();
+      toggleToast(emoji);
     });
   };
 
