@@ -24,6 +24,7 @@ export default function Home() {
   const [fuseInstance, setFuseInstance] = useState<Fuse<Emoji> | null>(null);
   const [recentSearch, setRecentSearch] = useState<string[]>([]);
 
+  // Loads the list of emojis from the json file
   useEffect(() => {
     (async function loadData() {
       const emojis = await import('../../public/emoji-list.json').then(
@@ -33,6 +34,7 @@ export default function Home() {
     })();
   }, []);
 
+  // sets up a fuse instance and loads recent search terms
   useEffect(() => {
     if (data) {
       const searchIndex = Fuse.createIndex(['title', 'keywords'], data);
@@ -56,6 +58,7 @@ export default function Home() {
     }
   }, [data]);
 
+  // Updates search results
   useEffect(() => {
     if (fuseInstance && router.query.q) {
       const searchTerm = router.query.q as string;
@@ -72,6 +75,7 @@ export default function Home() {
     }
   }, [fuseInstance, router.query.q]);
 
+  // Saves search term
   useEffect(() => {
     if (showToast && router.query.q) {
       Storage.saveItem(router.query.q as string);
@@ -136,7 +140,10 @@ export default function Home() {
         </div>
 
         {Boolean(router.query.q) ? (
-          <Gallery key={router.query.q as string} emojisList={searchResults} />
+          <Gallery
+            key={(router.query.q as string) + searchResults.length}
+            emojisList={searchResults}
+          />
         ) : (
           <Gallery emojisList={data} />
         )}
