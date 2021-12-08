@@ -111,12 +111,15 @@ export default function Home() {
 
       <main>
         <form className={styles.emojiForm}>
-          <Search className={styles.searchIcon} />
+          <label htmlFor="search" style={{ position: 'relative', top: '3px' }}>
+            <Search className={styles.searchIcon} />
+          </label>
           <input
             className={styles.emojiInput}
             onChange={handleSearchInput}
             ref={inputRef}
             type="search"
+            id="search"
           />
         </form>
 
