@@ -1,5 +1,5 @@
 .card {
-  background: #fff;
+  background: var(--white);
   box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
   border-radius: 5px;
   cursor: pointer;
@@ -7,13 +7,13 @@
   flex-direction: column;
   align-items: center;
   padding: 0.5rem 0.5rem 1rem;
-  color: #2f363d;
+  color: var(--primary);
   flex: 1;
   transition: background ease 0.3s;
   height: 10rem;
 }
 .card:hover {
-  background: #f4f4f4;
+  background: var(--grey);
 }
 .emoji {
   flex: 1 1 auto;
