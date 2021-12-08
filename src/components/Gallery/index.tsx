@@ -28,7 +28,11 @@ export function Gallery({ list }: GalleryProps) {
   return (
     <>
       {list ? (
-        <section className={styles.gridContainer} id="scrollableDiv">
+        <section
+          className={styles.gridContainer}
+          id="scrollableDiv"
+          data-cy="grid_container"
+        >
           {loadedEmojis ? (
             <ErrorCatch
               onReset={() => {
@@ -48,11 +52,11 @@ export function Gallery({ list }: GalleryProps) {
                 }
               >
                 {loadedEmojis.length > 0 ? (
-                  <div className={styles.listContainer}>
+                  <ul className={styles.listContainer} data-cy="emojis_grid">
                     {loadedEmojis.map((emoji, index) => (
                       <Card key={emoji.title + '-' + index} data={emoji} />
                     ))}
-                  </div>
+                  </ul>
                 ) : (
                   <div className={styles.loading}>No results found</div>
                 )}
