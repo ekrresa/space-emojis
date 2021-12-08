@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import styles from './gallery.module.css';
 
 import { Card } from '../Card';
+import { useToastContext } from '../../context/toasts';
 import { paginator } from '../../lib/paginate';
 import { Emoji } from '../../types';
 import { ErrorCatch } from '../ErrorBoundary';
@@ -12,6 +13,7 @@ interface GalleryProps {
 }
 
 export function Gallery({ list }: GalleryProps) {
+  const { toggleToast } = useToastContext();
   const [currentPage, setCurrentPage] = useState(1);
   const [loadedEmojis, setLoadedEmojis] = useState<Emoji[] | null>(null);
   const [hasMore, setHasMore] = useState(true);
@@ -24,6 +26,15 @@ export function Gallery({ list }: GalleryProps) {
       setHasMore(Boolean(nextPage));
     }
   }, [currentPage, list]);
+
+  const copyEmoji = useCallback(
+    (emoji: string) => {
+      navigator.clipboard.writeText(emoji).then(() => {
+        toggleToast(emoji);
+      });
+    },
+    [toggleToast]
+  );
 
   return (
     <>
@@ -54,7 +65,11 @@ export function Gallery({ list }: GalleryProps) {
                 {loadedEmojis.length > 0 ? (
                   <ul className={styles.listContainer} data-cy="emojis_grid">
                     {loadedEmojis.map((emoji, index) => (
-                      <Card key={emoji.title + '-' + index} data={emoji} />
+                      <Card
+                        key={emoji.title + '-' + index}
+                        data={emoji}
+                        copyEmoji={copyEmoji}
+                      />
                     ))}
                   </ul>
                 ) : (

@@ -1,4 +1,4 @@
-import { cleanup, customRender, getData, screen } from '../../../test-utils';
+import { cleanup, customRender, getData, screen, userEvent } from '../../setupTests';
 import { Card } from '.';
 import { Emoji } from '../../types';
 
@@ -12,9 +12,13 @@ describe('Card Tests', () => {
   afterAll(cleanup);
 
   test('should render without errors', async () => {
-    customRender(<Card data={emojis[1]} />);
+    const copyEmoji = jest.fn();
+    customRender(<Card data={emojis[1]} copyEmoji={copyEmoji} />);
 
     expect(screen.getByRole('heading')).toBeInTheDocument();
     expect(screen.getByTestId('emoji-symbol')).toBeInTheDocument();
+
+    userEvent.click(screen.getByTestId('emoji-card'));
+    expect(copyEmoji).toHaveBeenCalledTimes(1);
   });
 });
