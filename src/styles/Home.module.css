@@ -33,7 +33,7 @@
   margin: auto;
   max-width: 30rem;
   border: none;
-  outline: 1px solid var(--dull-grey);
+  border: 1px solid var(--dull-grey);
   border-radius: 40px;
   overflow: hidden;
   padding: 0.5rem 0.9rem;
@@ -42,8 +42,7 @@
   transform: translateZ(0);
 }
 .emojiForm:focus-within {
-  outline: 2px solid var(--green);
-  outline-offset: 1px;
+  border: 1px solid var(--green);
 }
 
 .emojiInput {
