@@ -7,7 +7,7 @@ interface PaginateProps {
 
 export function paginator({ data, currentPage = 1 }: PaginateProps) {
   let page = currentPage || 1;
-  let perPage = 100;
+  let perPage = 60;
   let offset = (page - 1) * perPage;
   let paginatedItems = data.slice(offset).slice(0, perPage);
   let totalPages = Math.ceil(data.length / perPage);
