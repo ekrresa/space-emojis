@@ -18,14 +18,14 @@ function ToastProvider({ children }: { children: React.ReactNode }) {
   const [toast, setToast] = React.useState(false);
   const [emoji, setEmoji] = React.useState('');
 
-  const toggleToast = (emoji: string) => {
+  const toggleToast = React.useCallback((emoji: string) => {
     setToast(true);
     setEmoji(emoji);
 
     setTimeout(() => {
       setToast(false);
     }, 2000);
-  };
+  }, []);
 
   return (
     <ToastContext.Provider
